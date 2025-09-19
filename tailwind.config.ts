@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        ubuntu: ['Ubuntu', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,15 +50,15 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        // Restaurant specific colors
+        restaurant: {
+          red: "hsl(var(--restaurant-red))",
+          yellow: "hsl(var(--restaurant-yellow))",
+          'yellow-hover': "hsl(var(--restaurant-yellow-hover))",
+        },
+        receipt: {
+          bg: "hsl(var(--receipt-bg))",
+          text: "hsl(var(--receipt-text))",
         },
       },
       borderRadius: {
@@ -80,10 +83,25 @@ export default {
             height: "0",
           },
         },
+        "receipt-print": {
+          "0%": {
+            transform: "translateY(100px) scale(0.8)",
+            opacity: "0",
+          },
+          "50%": {
+            transform: "translateY(0) scale(1.05)",
+            opacity: "0.8",
+          },
+          "100%": {
+            transform: "translateY(0) scale(1)",
+            opacity: "1",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "receipt-print": "receipt-print 2s ease-out forwards",
       },
     },
   },

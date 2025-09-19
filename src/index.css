@@ -2,104 +2,176 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Restaurant Design System - MyBrand Restaurant */
 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 11%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Restaurant Brand Colors */
+    --primary: 348 69% 49%; /* Red #D32F2F */
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 45 100% 51%; /* Yellow #FFC107 */
+    --secondary-foreground: 348 69% 49%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 45 100% 51%;
+    --accent-foreground: 348 69% 49%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 348 69% 49%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
+    /* Restaurant specific colors */
+    --restaurant-red: 348 69% 49%;
+    --restaurant-yellow: 45 100% 51%;
+    --restaurant-yellow-hover: 45 100% 45%;
+    --receipt-bg: 0 0% 100%;
+    --receipt-text: 0 0% 11%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Animation variables */
+    --print-duration: 2s;
+    --slide-distance: 100px;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --background: 0 0% 11%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 11%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 11%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 11%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 83%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-ubuntu;
+  }
+}
+
+/* Restaurant Components */
+@layer components {
+  .admin-header {
+    @apply w-full bg-primary text-primary-foreground py-6 px-8 text-center;
+  }
+
+  .menu-item {
+    @apply flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors;
+  }
+
+  .menu-checkbox {
+    @apply w-5 h-5 rounded border-2 border-primary;
+  }
+
+  .restaurant-button {
+    @apply bg-secondary text-secondary-foreground font-semibold py-3 px-6 rounded-lg 
+           hover:bg-restaurant-yellow-hover transition-colors duration-200 
+           focus:outline-none focus:ring-2 focus:ring-ring;
+  }
+
+  .receipt-container {
+    @apply bg-receipt-bg text-receipt-text p-8 rounded-lg shadow-2xl max-w-md mx-auto;
+  }
+
+  .brand-logo {
+    @apply text-2xl font-bold text-primary text-center mb-4;
+  }
+
+  .receipt-item {
+    @apply flex justify-between items-center py-2 border-b border-gray-200;
+  }
+
+  .receipt-total {
+    @apply flex justify-between items-center py-3 border-t-2 border-primary font-bold text-primary text-lg;
+  }
+
+  /* Ticket Animation */
+  .ticket-system {
+    @apply min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10 p-4;
+  }
+
+  .receipt-wrapper {
+    @apply relative;
+  }
+
+  .receipt-animated {
+    @apply transform-gpu;
+    animation: receiptPrint var(--print-duration) ease-out forwards;
+  }
+
+  .qr-section {
+    @apply mt-6 pt-6 border-t border-dashed border-gray-400 text-center;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .print\\:hidden {
+    display: none !important;
+  }
+  
+  .receipt-container {
+    @apply shadow-none max-w-none p-4;
+  }
+  
+  .ticket-system {
+    @apply bg-white p-0 min-h-0;
+  }
+  
+  body {
+    @apply bg-white;
+  }
+}
+
+/* Animations */
+@layer utilities {
+  @keyframes receiptPrint {
+    0% {
+      transform: translateY(var(--slide-distance)) scale(0.8);
+      opacity: 0;
+    }
+    50% {
+      transform: translateY(0) scale(1.05);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-receipt-print {
+    animation: receiptPrint 2s ease-out forwards;
   }
 }
