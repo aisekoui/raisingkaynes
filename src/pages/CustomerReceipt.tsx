@@ -35,7 +35,7 @@ const CustomerReceipt = () => {
       }
 
       try {
-        const response = await fetch(`/supabase/functions/v1/receipts/${shortId}`);
+        const response = await fetch(`https://eudcijcaihzctrfborim.supabase.co/functions/v1/receipts/${shortId}`);
         
         if (!response.ok) {
           if (response.status === 404) {

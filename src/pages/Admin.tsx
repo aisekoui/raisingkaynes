@@ -50,7 +50,7 @@ const Admin = () => {
     const selectedMenuItems = menuItems.filter(item => selectedItems.has(item.id));
     
     try {
-      const response = await fetch("/supabase/functions/v1/receipts", {
+      const response = await fetch("https://eudcijcaihzctrfborim.supabase.co/functions/v1/receipts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
