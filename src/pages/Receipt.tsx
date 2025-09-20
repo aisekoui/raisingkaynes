@@ -61,71 +61,60 @@ const Receipt = () => {
 
   return (
     <div className="ticket-system">
-      <div className="receipt-wrapper">
-        <div className={`receipt-container ${isAnimating ? 'animate-receipt-print' : 'opacity-0'}`}>
-          {/* Restaurant Logo */}
-          <div className="brand-logo">
-            🍔 MyBrand Restaurant
-          </div>
+      <div className="receipts-wrapper">
+        <div className={`receipts ${isAnimating ? 'animate-receipt-print' : 'opacity-0'}`}>
+          <div className="receipt">
+            {/* Restaurant Logo */}
+            <h1 className="brand-logo">🍔 MyBrand Restaurant</h1>
 
-          {/* Order Header */}
-          <div className="text-center mb-6 pb-4 border-b-2 border-dashed border-gray-300">
-            <h2 className="text-2xl font-bold text-primary mb-2">Receipt</h2>
-            <p className="text-lg font-semibold">{orderData.customerName}</p>
-            <p className="text-sm text-muted-foreground">{orderData.orderDate}</p>
-          </div>
+            {/* Order Header */}
+            <div className="order-header">
+              <h2>Receipt</h2>
+              <p id="customer-name">{orderData.customerName}</p>
+              <p id="order-date">{orderData.orderDate}</p>
+            </div>
 
-          {/* Order Items */}
-          <div className="space-y-3 mb-6">
-            {orderData.items.map((item, index) => (
-              <div key={index} className="receipt-item">
-                <span className="font-medium">{item.name}</span>
-                <span className="font-semibold">${item.price.toFixed(2)}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Total */}
-          <div className="receipt-total">
-            <span>Total</span>
-            <span>${orderData.total.toFixed(2)}</span>
-          </div>
-
-          {/* QR Code Section */}
-          <div className="qr-section">
-            <div className="w-20 h-20 bg-primary mx-auto rounded-lg flex items-center justify-center mb-3">
-              <div className="grid grid-cols-3 gap-1">
-                {[...Array(9)].map((_, i) => (
-                  <div 
-                    key={i} 
-                    className={`w-2 h-2 ${i % 2 === 0 ? 'bg-white' : 'bg-primary'} rounded-sm`}
-                  />
-                ))}
+            {/* Order Items */}
+            <div className="details">
+              {orderData.items.map((item, index) => (
+                <div key={index} className="item">
+                  <span>{item.name}</span>
+                  <h3>${item.price.toFixed(2)}</h3>
+                </div>
+              ))}
+              
+              {/* Total */}
+              <div className="item total">
+                <span>Total</span>
+                <h3>${orderData.total.toFixed(2)}</h3>
               </div>
             </div>
-            <h3 className="font-bold text-primary">Show at Counter</h3>
-            <p className="text-sm text-muted-foreground">Scan for feedback</p>
+
+            {/* QR Code Section */}
+            <div className="receipt qr-code">
+              <svg className="qr" width="60" height="60" viewBox="0 0 24 24">
+                <rect width="24" height="24" fill="#D32F2F"/>
+                <rect x="2" y="2" width="4" height="4" fill="white"/>
+                <rect x="8" y="2" width="4" height="4" fill="white"/>
+                <rect x="14" y="2" width="4" height="4" fill="white"/>
+                <rect x="2" y="8" width="4" height="4" fill="white"/>
+                <rect x="14" y="8" width="4" height="4" fill="white"/>
+                <rect x="2" y="14" width="4" height="4" fill="white"/>
+                <rect x="8" y="14" width="4" height="4" fill="white"/>
+                <rect x="14" y="14" width="4" height="4" fill="white"/>
+              </svg>
+              <div className="description">
+                <h2>Show at Counter</h2>
+                <p>Scan for feedback</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-4 mt-8 print:hidden">
-          <Button
-            onClick={handlePrint}
-            className="restaurant-button flex-1"
-            size="lg"
-          >
-            Print Receipt
-          </Button>
-          <Button
-            onClick={createNewOrder}
-            variant="outline"
-            className="flex-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-            size="lg"
-          >
-            New Order
-          </Button>
-        </div>
+        {/* Print Button */}
+        <button id="printReceipt" onClick={handlePrint} className="print-button">
+          Print Receipt
+        </button>
       </div>
     </div>
   );
