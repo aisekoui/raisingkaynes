@@ -14,13 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      receipts: {
+        Row: {
+          created_at: string
+          customer_name: string
+          expires_at: string | null
+          id: string
+          items: Json
+          short_id: string
+          total: number
+        }
+        Insert: {
+          created_at?: string
+          customer_name: string
+          expires_at?: string | null
+          id?: string
+          items: Json
+          short_id: string
+          total: number
+        }
+        Update: {
+          created_at?: string
+          customer_name?: string
+          expires_at?: string | null
+          id?: string
+          items?: Json
+          short_id?: string
+          total?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_short_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
