@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +17,6 @@ interface OrderData {
 
 const Receipt = () => {
   const [orderData, setOrderData] = useState<OrderData | null>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,9 +30,6 @@ const Receipt = () => {
     try {
       const parsedData = JSON.parse(data);
       setOrderData(parsedData);
-      
-      // Trigger animation after component mounts
-      setTimeout(() => setIsAnimating(true), 100);
     } catch (error) {
       toast.error("Invalid receipt data");
       navigate("/admin");
@@ -45,78 +40,58 @@ const Receipt = () => {
     window.print();
   };
 
-  const createNewOrder = () => {
-    navigate("/admin");
-  };
-
   if (!orderData) {
     return (
       <div className="ticket-system">
-        <div className="text-center">
-          <p className="text-lg">Loading receipt...</p>
+        <div className="top">
+          <h1 className="title">Loading receipt...</h1>
+          <div className="printer"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="ticket-system">
+    <main className="ticket-system">
+      <div className="top">
+        <h1 className="title">Wait a second, your receipt is being printed</h1>
+        <div className="printer"></div>
+      </div>
       <div className="receipts-wrapper">
-        <div className={`receipts ${isAnimating ? 'animate-receipt-print' : 'opacity-0'}`}>
+        <div className="receipts">
           <div className="receipt">
-            {/* Restaurant Logo */}
             <h1 className="brand-logo">🍔 MyBrand Restaurant</h1>
-
-            {/* Order Header */}
             <div className="order-header">
               <h2>Receipt</h2>
-              <p id="customer-name">{orderData.customerName}</p>
-              <p id="order-date">{orderData.orderDate}</p>
+              <p id="customer-name">Customer: {orderData.customerName}</p>
+              <p id="order-date">Date: {orderData.orderDate}</p>
             </div>
-
-            {/* Order Items */}
-            <div className="details">
+            <div className="details" id="order-details">
               {orderData.items.map((item, index) => (
                 <div key={index} className="item">
                   <span>{item.name}</span>
                   <h3>${item.price.toFixed(2)}</h3>
                 </div>
               ))}
-              
-              {/* Total */}
               <div className="item total">
                 <span>Total</span>
                 <h3>${orderData.total.toFixed(2)}</h3>
               </div>
             </div>
-
-            {/* QR Code Section */}
-            <div className="receipt qr-code">
-              <svg className="qr" width="60" height="60" viewBox="0 0 24 24">
-                <rect width="24" height="24" fill="#D32F2F"/>
-                <rect x="2" y="2" width="4" height="4" fill="white"/>
-                <rect x="8" y="2" width="4" height="4" fill="white"/>
-                <rect x="14" y="2" width="4" height="4" fill="white"/>
-                <rect x="2" y="8" width="4" height="4" fill="white"/>
-                <rect x="14" y="8" width="4" height="4" fill="white"/>
-                <rect x="2" y="14" width="4" height="4" fill="white"/>
-                <rect x="8" y="14" width="4" height="4" fill="white"/>
-                <rect x="14" y="14" width="4" height="4" fill="white"/>
-              </svg>
-              <div className="description">
-                <h2>Show at Counter</h2>
-                <p>Scan for feedback</p>
-              </div>
+          </div>
+          <div className="receipt qr-code">
+            <svg className="qr" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.938 29.938">
+              <path d="M7.129 15.683h1.427v1.427h1.426v1.426H2.853V17.11h1.426v-2.853h2.853v1.426h-.003zm18.535 12.83h1.424v-1.426h-1.424v1.426z"/>
+            </svg>
+            <div className="description">
+              <h2>Show at Counter</h2>
+              <p>Scan QR for feedback</p>
             </div>
           </div>
         </div>
-
-        {/* Print Button */}
-        <button id="printReceipt" onClick={handlePrint} className="print-button">
-          Print Receipt
-        </button>
       </div>
-    </div>
+      <button id="printReceipt" onClick={handlePrint}>Print Receipt</button>
+    </main>
   );
 };
 

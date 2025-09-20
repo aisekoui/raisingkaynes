@@ -78,6 +78,17 @@
   body {
     @apply bg-background text-foreground font-ubuntu;
   }
+
+  /* Receipt page specific styling */
+  body:has(.ticket-system) {
+    background-color: #D32F2F !important;
+    color: #1c1c1c;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 /* Restaurant Components */
@@ -100,88 +111,177 @@
            focus:outline-none focus:ring-2 focus:ring-ring;
   }
 
-  /* Ticket Animation */
+  /* Ticket Animation - Exact structure from provided HTML */
   .ticket-system {
-    @apply min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10 p-4;
+    max-width: 385px;
+    height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .title {
+    font-weight: normal;
+    font-size: 1.6em;
+    text-align: left;
+    margin-left: 20px;
+    margin-bottom: 30px;
+    color: #fff;
+  }
+
+  .printer {
+    width: 90%;
+    height: 20px;
+    border: 5px solid #fff;
+    border-radius: 10px;
+    box-shadow: 1px 3px 3px 0px rgba(0, 0, 0, 0.2);
   }
 
   .receipts-wrapper {
-    @apply relative;
+    overflow: hidden;
+    margin-top: -10px;
+    padding-bottom: 10px;
   }
 
   .receipts {
-    @apply transform-gpu;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    transform: translateY(-510px);
+    animation-duration: 2.5s;
+    animation-delay: 500ms;
+    animation-name: print;
+    animation-fill-mode: forwards;
   }
 
   .receipt {
-    @apply bg-receipt-bg text-receipt-text p-8 rounded-lg shadow-2xl max-w-md mx-auto;
+    padding: 25px 30px;
+    text-align: left;
+    min-height: 200px;
+    width: 88%;
+    background-color: #fff;
+    border-radius: 10px 10px 20px 20px;
+    box-shadow: 1px 3px 8px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
   }
 
   .brand-logo {
-    @apply text-2xl font-bold text-primary text-center mb-6;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #D32F2F;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
   .order-header {
-    @apply text-center mb-6 pb-4 border-b-2 border-dashed border-gray-300;
+    margin: 20px 0;
+    text-align: center;
   }
 
   .order-header h2 {
-    @apply text-2xl font-bold text-primary mb-2;
+    margin: 0;
+    font-size: 1.6em;
+    color: #D32F2F;
   }
 
   .order-header p {
-    @apply text-sm text-muted-foreground mb-1;
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #555;
   }
 
   .details {
-    @apply space-y-3 mb-6;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   .item {
-    @apply flex justify-between items-center py-2;
+    display: flex;
+    flex-direction: column;
+    min-width: 70px;
   }
 
   .item span {
-    @apply font-medium;
+    font-size: 0.8em;
+    color: rgba(28, 28, 28, 0.7);
+    font-weight: 500;
   }
 
   .item h3 {
-    @apply font-semibold;
-  }
-
-  .item.total {
-    @apply border-t-2 border-primary pt-3 mt-3;
+    margin-top: 10px;
+    margin-bottom: 25px;
   }
 
   .item.total h3 {
-    @apply text-primary font-bold;
+    color: #D32F2F;
+    font-weight: bold;
   }
 
   .receipt.qr-code {
-    @apply mt-6 pt-6 border-t border-dashed border-gray-400 text-center relative;
+    height: 110px;
+    min-height: unset;
+    position: relative;
+    border-radius: 20px 20px 10px 10px;
+    display: flex;
+    align-items: center;
   }
 
   .receipt.qr-code::before {
     content: '';
-    @apply absolute top-0 left-1/2 transform -translate-x-1/2 w-16 h-0.5;
     background: linear-gradient(to right, #fff 50%, #D32F2F 50%);
+    background-size: 22px 4px, 100% 4px;
+    height: 4px;
+    width: 90%;
+    display: block;
+    left: 0;
+    right: 0;
+    top: -1px;
+    position: absolute;
+    margin: auto;
   }
 
   .qr {
-    @apply mx-auto mb-3;
+    width: 70px;
+    height: 70px;
+  }
+
+  .description {
+    margin-left: 20px;
   }
 
   .description h2 {
-    @apply font-bold text-primary mb-1;
+    margin: 0 0 5px 0;
+    font-weight: 500;
+    color: #D32F2F;
   }
 
   .description p {
-    @apply text-sm text-muted-foreground;
+    margin: 0;
+    font-weight: 400;
   }
 
-  .print-button {
-    @apply bg-secondary text-secondary-foreground font-bold py-3 px-6 rounded-lg mt-6 mx-auto block
-           hover:bg-restaurant-yellow-hover transition-colors duration-200 cursor-pointer border-none;
+  button {
+    background-color: #FFC107;
+    color: #D32F2F;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #e6a900;
   }
 }
 
@@ -206,22 +306,14 @@
 
 /* Animations */
 @layer utilities {
-  @keyframes receiptPrint {
-    0% {
-      transform: translateY(var(--slide-distance)) scale(0.8);
-      opacity: 0;
-    }
-    50% {
-      transform: translateY(0) scale(1.05);
-      opacity: 0.8;
-    }
-    100% {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
+  @keyframes print {
+    0% { transform: translateY(-510px); }
+    35% { transform: translateY(-395px); }
+    70% { transform: translateY(-140px); }
+    100% { transform: translateY(0); }
   }
 
   .animate-receipt-print {
-    animation: receiptPrint 2s ease-out forwards;
+    animation: print 2s ease-out forwards;
   }
 }
