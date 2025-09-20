@@ -36,7 +36,7 @@ const Admin = () => {
     setSelectedItems(newSelected);
   };
 
-  const generateReceipt = () => {
+  const generateReceipt = async () => {
     if (!customerName.trim()) {
       toast.error("Please enter customer name");
       return;
@@ -48,18 +48,45 @@ const Admin = () => {
     }
 
     const selectedMenuItems = menuItems.filter(item => selectedItems.has(item.id));
-    const total = selectedMenuItems.reduce((sum, item) => sum + item.price, 0);
+    
+    try {
+      const response = await fetch("/supabase/functions/v1/receipts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          customerName: customerName.trim(),
+          items: selectedMenuItems.map(item => ({
+            name: item.name,
+            price: item.price,
+            qty: 1,
+          })),
+          meta: {
+            createdBy: "staff",
+          },
+        }),
+      });
 
-    const orderData = {
-      customerName: customerName.trim(),
-      orderDate: new Date().toLocaleString(),
-      items: selectedMenuItems,
-      total,
-    };
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({}));
+        throw new Error(error.error || `HTTP ${response.status}`);
+      }
 
-    localStorage.setItem("receiptData", JSON.stringify(orderData));
-    toast.success("Receipt generated successfully!");
-    navigate("/receipt");
+      const data = await response.json();
+      
+      toast.success("Receipt generated successfully!");
+      
+      // Print the receipt
+      window.print();
+      
+      // After printing, navigate to the customer receipt page
+      navigate(`/r/${data.short_id}`);
+      
+    } catch (error) {
+      console.error("Error generating receipt:", error);
+      toast.error(`Failed to generate receipt: ${error.message}`);
+    }
   };
 
   return (
