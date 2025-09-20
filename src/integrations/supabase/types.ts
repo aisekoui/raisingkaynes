@@ -16,8 +16,9 @@ export type Database = {
     Tables: {
       receipts: {
         Row: {
-          created_at: string
-          customer_name: string
+          created_at: string | null
+          created_by: string | null
+          customer_name: string | null
           expires_at: string | null
           id: string
           items: Json
@@ -25,17 +26,19 @@ export type Database = {
           total: number
         }
         Insert: {
-          created_at?: string
-          customer_name: string
+          created_at?: string | null
+          created_by?: string | null
+          customer_name?: string | null
           expires_at?: string | null
           id?: string
           items: Json
-          short_id: string
+          short_id?: string
           total: number
         }
         Update: {
-          created_at?: string
-          customer_name?: string
+          created_at?: string | null
+          created_by?: string | null
+          customer_name?: string | null
           expires_at?: string | null
           id?: string
           items?: Json
