@@ -119,6 +119,45 @@ const StaffReceipt = () => {
     fetchReceipt();
   }, [sid]);
 
+  // Generate scattered chicken background
+  const generateChickenBackground = () => {
+    const chickenBg = document.getElementById("chickenBg");
+    if (!chickenBg) return;
+
+    // Clear existing chickens
+    chickenBg.innerHTML = '';
+    
+    const numChickens = 30;
+    const chickenSrc = "/chicken-logo.png";
+
+    for (let i = 0; i < numChickens; i++) {
+      const chicken = document.createElement("img");
+      chicken.src = chickenSrc;
+
+      // Random positions ensuring good distribution
+      const top = Math.random() * 90 + 5; // 5% to 95% to avoid edges
+      const left = Math.random() * 90 + 5;
+      chicken.style.top = top + "%";
+      chicken.style.left = left + "%";
+
+      // Random rotation
+      const rotation = Math.floor(Math.random() * 360);
+      chicken.style.transform = `rotate(${rotation}deg)`;
+
+      chickenBg.appendChild(chicken);
+    }
+  };
+
+  // Trigger background generation after receipt data is loaded
+  useEffect(() => {
+    if (receipt && !loading && !error) {
+      setTimeout(() => {
+        generateChickenBackground();
+        playPrintAnimation();
+      }, 100);
+    }
+  }, [receipt, loading, error]);
+
   const handlePrint = () => {
     window.print();
   };
@@ -160,6 +199,7 @@ const StaffReceipt = () => {
 
   return (
     <div className="ticket-system min-h-screen flex flex-col">
+      <div className="chicken-bg" id="chickenBg"></div>
       <div className="top">
         <h1 className="title">Raising Kaynes</h1>
         <div className="printer"></div>
