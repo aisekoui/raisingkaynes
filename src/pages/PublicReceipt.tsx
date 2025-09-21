@@ -126,10 +126,10 @@ const PublicReceipt = () => {
     // Clear existing chickens
     chickenBg.innerHTML = '';
     
-    const numChickens = 50;
+    const numChickens = 100; // MORE CHICKEN!
     const chickenSrc = "/chicken-logo.png";
     const chickenSize = 55; // Size in pixels
-    const minDistance = 70; // Minimum distance between chicken centers
+    const minDistance = 65; // Slightly smaller min distance to fit more
     const positions: { top: number; left: number }[] = [];
 
     // Helper function to check if position is valid (doesn't overlap)
@@ -146,15 +146,15 @@ const PublicReceipt = () => {
       let attempts = 0;
       let top, left;
       
-      // Try to find a valid position (max 100 attempts per chicken)
+      // Try to find a valid position (increased attempts for more chickens)
       do {
         top = Math.random() * 85 + 7.5; // 7.5% to 92.5% to avoid edges
         left = Math.random() * 85 + 7.5;
         attempts++;
-      } while (!isValidPosition(top, left) && attempts < 100);
+      } while (!isValidPosition(top, left) && attempts < 200);
 
       // Only add chicken if we found a valid position
-      if (attempts < 100) {
+      if (attempts < 200) {
         positions.push({ top, left });
         
         const chicken = document.createElement("img");
