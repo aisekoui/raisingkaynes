@@ -31,6 +31,40 @@
   border-radius: 6px;
 }
 
+/* Receipt page background pattern */
+.receipt-page {
+  background-image: url('/chicken-pattern.png');
+  background-repeat: repeat;
+  background-size: 120px;
+  background-position: top left;
+  background-color: hsl(var(--background));
+  position: relative;
+}
+
+.receipt-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/chicken-pattern.png');
+  background-repeat: repeat;
+  background-size: 120px;
+  background-position: top left;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Ensure receipt cards stay fully opaque */
+.receipt {
+  background: white !important;
+  opacity: 1 !important;
+  position: relative;
+  z-index: 1;
+}
+
 /* Restaurant Design System - MyBrand Restaurant */
 
 @layer base {
