@@ -38,6 +38,34 @@ const PublicReceipt = () => {
   const [error, setError] = useState<string | null>(null);
   const receiptsRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const chickenBgRef = useRef<HTMLDivElement>(null);
+
+  const generateChickenBackground = () => {
+    const chickenBg = chickenBgRef.current;
+    if (!chickenBg) return;
+
+    chickenBg.innerHTML = ''; // Clear existing chickens
+    const numChickens = 30;
+    
+    for (let i = 0; i < numChickens; i++) {
+      const chicken = document.createElement('img');
+      chicken.src = '/chicken-logo.png';
+      
+      // Random positions
+      chicken.style.top = Math.random() * 100 + '%';
+      chicken.style.left = Math.random() * 100 + '%';
+      
+      // Random rotation
+      const rotation = Math.floor(Math.random() * 360);
+      chicken.style.transform = `rotate(${rotation}deg)`;
+      
+      // Random size within range (40-80px)
+      const size = 40 + Math.random() * 40;
+      chicken.style.width = `${size}px`;
+      
+      chickenBg.appendChild(chicken);
+    }
+  };
 
   // Play print animation after receipt is populated
   const playPrintAnimation = () => {
@@ -75,6 +103,10 @@ const PublicReceipt = () => {
       }
     }, 3500);
   };
+
+  useEffect(() => {
+    generateChickenBackground();
+  }, []);
 
   useEffect(() => {
     const fetchReceipt = async () => {
@@ -157,6 +189,8 @@ const PublicReceipt = () => {
 
   return (
     <div className="ticket-system min-h-screen flex flex-col receipt-page">
+      <div className="chicken-bg" ref={chickenBgRef}></div>
+      
       <div className="top">
         <h1 className="title">Raising Kaynes</h1>
         <div className="printer"></div>
@@ -165,13 +199,8 @@ const PublicReceipt = () => {
       <div className="receipts-wrapper" ref={wrapperRef}>
         <div className="receipts" ref={receiptsRef}>
           <div className="receipt">
-            <div className="brand-logo flex items-center space-x-2">
-              <img 
-                src="/logo.png" 
-                alt="Raising Kaynes logo" 
-                className="w-8 h-8 object-contain"
-              />
-              <span>Raising Kaynes</span>
+            <div className="brand-logo">
+              <span className="raising">RAISING</span> <span className="kaynes">KAYNES</span>
             </div>
             
             <div className="order-header">

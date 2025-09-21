@@ -111,13 +111,9 @@
   /* Receipt page specific styling */
   body:has(.ticket-system) {
     background-color: #D32F2F !important;
-    background-image: 
-      url('/chicken-logo.png'),
-      url('/chicken-logo.png'),
-      url('/chicken-logo.png');
-    background-repeat: repeat, repeat, repeat;
-    background-size: 80px, 75px, 85px;
-    background-position: 0 0, 40px 30px, 20px 60px;
+    margin: 0;
+    position: relative;
+    overflow-x: hidden;
     color: #1c1c1c;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -126,25 +122,22 @@
     justify-content: center;
   }
 
-  /* Add opacity and rotation variations to chicken background */
-  body:has(.ticket-system)::before {
-    content: '';
-    position: fixed;
+  /* Scattered chicken background */
+  .chicken-bg {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-      url('/chicken-logo.png'),
-      url('/chicken-logo.png'),
-      url('/chicken-logo.png');
-    background-repeat: repeat, repeat, repeat;
-    background-size: 80px, 75px, 85px;
-    background-position: 0 0, 40px 30px, 20px 60px;
-    opacity: 0.2;
     pointer-events: none;
-    z-index: 0;
-    transform: rotate(0deg);
+    z-index: -1;
+  }
+
+  .chicken-bg img {
+    position: absolute;
+    opacity: 0.2;
+    width: 60px;
+    height: auto;
   }
 
   /* Make sure receipt cards stay fully opaque and above background */
@@ -246,10 +239,22 @@
 
   .brand-logo {
     font-size: 1.4em;
-    font-weight: bold;
-    color: #D32F2F;
+    font-weight: 900;
+    font-family: 'Inter', sans-serif;
     margin-bottom: 10px;
     text-align: center;
+    -webkit-text-stroke: 2px #000;
+    text-stroke: 2px #000;
+  }
+
+  .brand-logo .raising {
+    color: #D32F2F;
+    -webkit-text-fill-color: #D32F2F;
+  }
+
+  .brand-logo .kaynes {
+    color: #FFC107;
+    -webkit-text-fill-color: #FFC107;
   }
 
   .order-header {
