@@ -24,13 +24,20 @@ const Index = () => {
           marginBottom: '0'
         }}
       >
-        <div className="text-left">
-          <h1 className="text-white font-ubuntu font-bold text-2xl leading-tight">
-            Raising Kaynes
-          </h1>
-          <p className="text-white/90 font-ubuntu font-medium text-sm mt-1">
-            Admin Page
-          </p>
+        <div className="flex items-center space-x-3 text-left">
+          <img 
+            src="/src/assets/logo.png" 
+            alt="Raising Kaynes logo" 
+            className="w-12 h-12 object-contain"
+          />
+          <div>
+            <h1 className="text-white font-ubuntu font-bold text-2xl leading-tight">
+              Raising Kaynes
+            </h1>
+            <p className="text-white/90 font-ubuntu font-medium text-sm mt-1">
+              Admin Page
+            </p>
+          </div>
         </div>
       </header>
 

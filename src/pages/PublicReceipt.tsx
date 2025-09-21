@@ -114,7 +114,14 @@ const PublicReceipt = () => {
       <div className="receipts-wrapper">
         <div className="receipts">
           <div className="receipt">
-            <div className="brand-logo">🍔 Raising Kaynes</div>
+            <div className="brand-logo flex items-center space-x-2">
+              <img 
+                src="/src/assets/logo.png" 
+                alt="Raising Kaynes logo" 
+                className="w-8 h-8 object-contain"
+              />
+              <span>Raising Kaynes</span>
+            </div>
             
             <div className="order-header">
               <h2>Order Receipt</h2>
@@ -173,9 +180,11 @@ const PublicReceipt = () => {
 
           <div className="receipt qr-code">
             <div className="qr">
-              <div className="w-full h-full bg-primary/10 rounded flex items-center justify-center text-2xl">
-                📱
-              </div>
+              <img 
+                src="/src/assets/qr-code.png" 
+                alt="Order Again QR Code" 
+                className="w-full h-full object-contain"
+              />
             </div>
             <div className="description">
               <h2>Thank you for ordering!</h2>
