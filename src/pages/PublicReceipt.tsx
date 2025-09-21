@@ -156,7 +156,7 @@ const PublicReceipt = () => {
   }
 
   return (
-    <div className="ticket-system min-h-screen flex flex-col">
+    <div className="ticket-system min-h-screen flex flex-col receipt-page">
       <div className="top">
         <h1 className="title">Raising Kaynes</h1>
         <div className="printer"></div>
