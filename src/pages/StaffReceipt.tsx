@@ -39,34 +39,6 @@ const StaffReceipt = () => {
   const [error, setError] = useState<string | null>(null);
   const receiptsRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const chickenBgRef = useRef<HTMLDivElement>(null);
-
-  const generateChickenBackground = () => {
-    const chickenBg = chickenBgRef.current;
-    if (!chickenBg) return;
-
-    chickenBg.innerHTML = ''; // Clear existing chickens
-    const numChickens = 30;
-    
-    for (let i = 0; i < numChickens; i++) {
-      const chicken = document.createElement('img');
-      chicken.src = '/chicken-logo.png';
-      
-      // Random positions
-      chicken.style.top = Math.random() * 100 + '%';
-      chicken.style.left = Math.random() * 100 + '%';
-      
-      // Random rotation
-      const rotation = Math.floor(Math.random() * 360);
-      chicken.style.transform = `rotate(${rotation}deg)`;
-      
-      // Random size within range (40-80px)
-      const size = 40 + Math.random() * 40;
-      chicken.style.width = `${size}px`;
-      
-      chickenBg.appendChild(chicken);
-    }
-  };
 
   // Play print animation after receipt is populated
   const playPrintAnimation = () => {
@@ -108,10 +80,6 @@ const StaffReceipt = () => {
   const sid = searchParams.get('sid');
 
   useEffect(() => {
-    generateChickenBackground();
-  }, []);
-
-  useEffect(() => {
     const fetchReceipt = async () => {
       if (!sid) {
         setError("Receipt ID not found");
@@ -120,27 +88,25 @@ const StaffReceipt = () => {
       }
 
       try {
-        const { data, error } = await supabase.rpc('get_receipt_by_short_id', {
-          receipt_short_id: sid
-        });
+        const { data, error } = await supabase
+          .from('receipts')
+          .select('*')
+          .eq('short_id', sid)
+          .single();
 
         if (error) {
-          console.error("Error fetching receipt:", error);
-          setError("Failed to load receipt");
+          if (error.code === 'PGRST116') {
+            setError("Receipt not found");
+          } else {
+            setError("Failed to load receipt");
+          }
           setLoading(false);
           return;
         }
 
-        if (!data || data.length === 0) {
-          setError("Receipt not found or expired");
-          setLoading(false);
-          return;
-        }
-
-        const receiptData = data[0];
         setReceipt({
-          ...receiptData,
-          items: receiptData.items as unknown as MenuItem[]
+          ...data,
+          items: data.items as unknown as MenuItem[]
         });
       } catch (err) {
         console.error("Error fetching receipt:", err);
@@ -193,9 +159,7 @@ const StaffReceipt = () => {
   const publicUrl = `${window.location.origin}/r/${receipt.short_id}`;
 
   return (
-    <div className="ticket-system min-h-screen flex flex-col receipt-page">
-      <div className="chicken-bg" ref={chickenBgRef}></div>
-      
+    <div className="ticket-system min-h-screen flex flex-col">
       <div className="top">
         <h1 className="title">Raising Kaynes</h1>
         <div className="printer"></div>
@@ -204,8 +168,13 @@ const StaffReceipt = () => {
       <div className="receipts-wrapper" ref={wrapperRef}>
         <div className="receipts" ref={receiptsRef}>
           <div className="receipt">
-            <div className="brand-logo">
-              <span className="raising">RAISING</span> <span className="kaynes">KAYNES</span>
+            <div className="brand-logo flex items-center space-x-2">
+              <img 
+                src="/logo.png" 
+                alt="Raising Kaynes logo" 
+                className="w-8 h-8 object-contain"
+              />
+              <span>Raising Kaynes</span>
             </div>
             
             <div className="order-header">
