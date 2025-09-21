@@ -107,14 +107,14 @@ const PublicReceipt = () => {
   }
 
   return (
-    <div className="ticket-system">
+    <div className="ticket-system min-h-screen flex flex-col">
       <div className="top">
         <h1 className="title">Raising Kaynes</h1>
         <div className="printer"></div>
       </div>
       
-      <div className="receipts-wrapper">
-        <div className="receipts">
+      <div className="receipts-wrapper flex-1 flex items-center justify-center p-4">
+        <div className="receipts max-h-[80vh] overflow-y-auto custom-scrollbar">
           <div className="receipt">
             <div className="brand-logo flex items-center space-x-2">
               <img 
