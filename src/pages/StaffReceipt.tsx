@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -37,6 +37,45 @@ const StaffReceipt = () => {
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const receiptsRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // Play print animation after receipt is populated
+  const playPrintAnimation = () => {
+    const receiptsEl = receiptsRef.current;
+    const wrapper = wrapperRef.current;
+
+    if (!receiptsEl || !wrapper) return;
+
+    console.log('Starting print animation');
+
+    // Make sure wrapper is in the pre-animation state
+    wrapper.classList.remove('printed');
+
+    // Force re-trigger of animation:
+    receiptsEl.style.animation = 'none';     // clear any existing inline animation
+    // force reflow
+    void receiptsEl.offsetWidth;
+    // set animation again (match your CSS name/duration)
+    receiptsEl.style.animation = 'print 2.5s 500ms forwards';
+
+    // When the animation ends, enable scrolling (class .printed switches overflow to auto)
+    function handleAnimationEnd() {
+      console.log('Animation ended, enabling scrolling');
+      wrapper.classList.add('printed');
+      receiptsEl.removeEventListener('animationend', handleAnimationEnd);
+    }
+
+    receiptsEl.addEventListener('animationend', handleAnimationEnd);
+
+    // Fallback: in case animationend doesn't fire (older browsers/interrupt), enable scrolling after 3.5s
+    setTimeout(() => {
+      if (!wrapper.classList.contains('printed')) {
+        console.log('Fallback timeout: enabling scrolling');
+        wrapper.classList.add('printed');
+      }
+    }, 3500);
+  };
   
   const sid = searchParams.get('sid');
 
@@ -126,8 +165,8 @@ const StaffReceipt = () => {
         <div className="printer"></div>
       </div>
       
-      <div className="receipts-wrapper flex-1 flex items-center justify-center p-4">
-        <div className="receipts max-h-[80vh] overflow-y-auto custom-scrollbar">
+      <div className="receipts-wrapper" ref={wrapperRef}>
+        <div className="receipts" ref={receiptsRef}>
           <div className="receipt">
             <div className="brand-logo flex items-center space-x-2">
               <img 

@@ -2,36 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom scrollbar styling */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+/* keep wrapper hidden during animation, allow scrolling afterward */
+.receipts-wrapper {
+  overflow: hidden;            /* clip while printing */
+  margin-top: -10px;
+  padding-bottom: 10px;
+  /* optional: limit absolute height while printed */
+  max-height: 70vh;            /* fallback cap while printing */
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-  border-radius: 4px;
+/* When printing animation finishes, enable scrolling */
+.receipts-wrapper.printed {
+  overflow-y: auto;            /* enable scroll */
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  max-height: calc(100vh - 140px);  /* adjust so header + controls fit */
+  padding-right: 8px;          /* room for scrollbar */
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary));
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
+/* make sure the animated element can transform smoothly */
+.receipts {
+  will-change: transform;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary) / 0.8);
-}
-
-/* Firefox scrollbar styling */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--primary)) hsl(var(--muted));
-  scroll-behavior: smooth;
-}
-
-/* Smooth scrolling animation */
-.custom-scrollbar {
-  animation: fade-in 0.3s ease-out;
+/* optional: style the scrollbar for nicer look (non-critical) */
+.receipts-wrapper.printed::-webkit-scrollbar { width: 10px; }
+.receipts-wrapper.printed::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 6px;
 }
 
 /* Restaurant Design System - MyBrand Restaurant */
