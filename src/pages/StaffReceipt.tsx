@@ -88,25 +88,27 @@ const StaffReceipt = () => {
       }
 
       try {
-        const { data, error } = await supabase
-          .from('receipts')
-          .select('*')
-          .eq('short_id', sid)
-          .single();
+        const { data, error } = await supabase.rpc('get_receipt_by_short_id', {
+          receipt_short_id: sid
+        });
 
         if (error) {
-          if (error.code === 'PGRST116') {
-            setError("Receipt not found");
-          } else {
-            setError("Failed to load receipt");
-          }
+          console.error("Error fetching receipt:", error);
+          setError("Failed to load receipt");
           setLoading(false);
           return;
         }
 
+        if (!data || data.length === 0) {
+          setError("Receipt not found or expired");
+          setLoading(false);
+          return;
+        }
+
+        const receiptData = data[0];
         setReceipt({
-          ...data,
-          items: data.items as unknown as MenuItem[]
+          ...receiptData,
+          items: receiptData.items as unknown as MenuItem[]
         });
       } catch (err) {
         console.error("Error fetching receipt:", err);
