@@ -56,6 +56,18 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_receipt_by_short_id: {
+        Args: { receipt_short_id: string }
+        Returns: {
+          created_at: string
+          customer_name: string
+          expires_at: string
+          id: string
+          items: Json
+          short_id: string
+          total: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
