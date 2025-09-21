@@ -118,7 +118,7 @@ const PublicReceipt = () => {
     fetchReceipt();
   }, [shortId]);
 
-  // Generate scattered chicken background
+  // Generate scattered chicken background with collision detection
   const generateChickenBackground = () => {
     const chickenBg = document.getElementById("chickenBg");
     if (!chickenBg) return;
@@ -126,24 +126,48 @@ const PublicReceipt = () => {
     // Clear existing chickens
     chickenBg.innerHTML = '';
     
-    const numChickens = 30;
+    const numChickens = 50;
     const chickenSrc = "/chicken-logo.png";
+    const chickenSize = 55; // Size in pixels
+    const minDistance = 70; // Minimum distance between chicken centers
+    const positions: { top: number; left: number }[] = [];
+
+    // Helper function to check if position is valid (doesn't overlap)
+    const isValidPosition = (newTop: number, newLeft: number) => {
+      return positions.every(pos => {
+        const distance = Math.sqrt(
+          Math.pow(newTop - pos.top, 2) + Math.pow(newLeft - pos.left, 2)
+        );
+        return distance >= minDistance;
+      });
+    };
 
     for (let i = 0; i < numChickens; i++) {
-      const chicken = document.createElement("img");
-      chicken.src = chickenSrc;
+      let attempts = 0;
+      let top, left;
+      
+      // Try to find a valid position (max 100 attempts per chicken)
+      do {
+        top = Math.random() * 85 + 7.5; // 7.5% to 92.5% to avoid edges
+        left = Math.random() * 85 + 7.5;
+        attempts++;
+      } while (!isValidPosition(top, left) && attempts < 100);
 
-      // Random positions ensuring good distribution
-      const top = Math.random() * 90 + 5; // 5% to 95% to avoid edges
-      const left = Math.random() * 90 + 5;
-      chicken.style.top = top + "%";
-      chicken.style.left = left + "%";
+      // Only add chicken if we found a valid position
+      if (attempts < 100) {
+        positions.push({ top, left });
+        
+        const chicken = document.createElement("img");
+        chicken.src = chickenSrc;
+        chicken.style.top = top + "%";
+        chicken.style.left = left + "%";
 
-      // Random rotation
-      const rotation = Math.floor(Math.random() * 360);
-      chicken.style.transform = `rotate(${rotation}deg)`;
+        // Random rotation
+        const rotation = Math.floor(Math.random() * 360);
+        chicken.style.transform = `rotate(${rotation}deg)`;
 
-      chickenBg.appendChild(chicken);
+        chickenBg.appendChild(chicken);
+      }
     }
   };
 
