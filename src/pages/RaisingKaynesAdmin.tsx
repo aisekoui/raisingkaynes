@@ -272,7 +272,11 @@ const RaisingKaynesAdmin = () => {
         }}
       >
         <div className="flex items-center">
-          <div className="text-6xl mr-4">🍔</div>
+          <img 
+            src="/logo.png" 
+            alt="Raising Kaynes logo" 
+            className="w-12 h-12 object-contain mr-4"
+          />
           <div className="text-left">
             <h1 className="text-white font-ubuntu font-bold text-2xl leading-tight">
               Raising Kaynes

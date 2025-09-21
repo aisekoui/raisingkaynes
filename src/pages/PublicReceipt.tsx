@@ -167,7 +167,7 @@ const PublicReceipt = () => {
           <div className="receipt">
             <div className="brand-logo flex items-center space-x-2">
               <img 
-                src="/src/assets/logo.png" 
+                src="/logo.png" 
                 alt="Raising Kaynes logo" 
                 className="w-8 h-8 object-contain"
               />
@@ -232,7 +232,7 @@ const PublicReceipt = () => {
           <div className="receipt qr-code">
             <div className="qr">
               <img 
-                src="/src/assets/qr-code.png" 
+                src="/qr-code.png" 
                 alt="Order Again QR Code" 
                 className="w-full h-full object-contain"
               />

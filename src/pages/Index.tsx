@@ -26,7 +26,7 @@ const Index = () => {
       >
         <div className="flex items-center space-x-3 text-left">
           <img 
-            src="/src/assets/logo.png" 
+            src="/logo.png" 
             alt="Raising Kaynes logo" 
             className="w-12 h-12 object-contain"
           />

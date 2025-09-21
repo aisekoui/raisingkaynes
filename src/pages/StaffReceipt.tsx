@@ -170,7 +170,7 @@ const StaffReceipt = () => {
           <div className="receipt">
             <div className="brand-logo flex items-center space-x-2">
               <img 
-                src="/src/assets/logo.png" 
+                src="/logo.png" 
                 alt="Raising Kaynes logo" 
                 className="w-8 h-8 object-contain"
               />
@@ -235,7 +235,7 @@ const StaffReceipt = () => {
           <div className="receipt qr-code">
             <div className="qr">
               <img 
-                src="/src/assets/qr-code.png" 
+                src="/qr-code.png" 
                 alt="Order Again QR Code" 
                 className="w-full h-full object-contain"
               />
@@ -248,7 +248,7 @@ const StaffReceipt = () => {
         </div>
       </div>
 
-      <div className="text-center mt-8 print:hidden space-y-4">
+      <div className="text-center mt-8 print:hidden space-y-4 pb-8">
         <div className="bg-white p-4 rounded-lg shadow-lg max-w-md mx-auto">
           <h3 className="text-lg font-semibold text-primary mb-2">Share with Customer</h3>
           <p className="text-sm text-gray-600 mb-2">Public receipt link:</p>
