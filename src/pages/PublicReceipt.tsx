@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -245,6 +246,21 @@ const PublicReceipt = () => {
 
   return (
     <div className="ticket-system min-h-screen flex flex-col">
+      <Helmet>
+        <title>{receipt ? `${receipt.customer_name}'s Receipt - Raising Kaynes` : 'Receipt - Raising Kaynes'}</title>
+        <meta name="description" content={receipt ? `View ${receipt.customer_name}'s order receipt from Raising Kaynes. Order total: ₱${receipt.total}` : 'View your Raising Kaynes order receipt online.'} />
+        
+        <meta property="og:title" content={receipt ? `${receipt.customer_name}'s Receipt - Raising Kaynes` : 'Receipt - Raising Kaynes'} />
+        <meta property="og:description" content={receipt ? `View ${receipt.customer_name}'s order receipt from Raising Kaynes. Order total: ₱${receipt.total}` : 'View your Raising Kaynes order receipt online.'} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:url" content={window.location.href} />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={receipt ? `${receipt.customer_name}'s Receipt - Raising Kaynes` : 'Receipt - Raising Kaynes'} />
+        <meta name="twitter:description" content={receipt ? `View ${receipt.customer_name}'s order receipt from Raising Kaynes. Order total: ₱${receipt.total}` : 'View your Raising Kaynes order receipt online.'} />
+        <meta name="twitter:image" content="/og-image.png" />
+      </Helmet>
       <canvas id="chickenCanvas" className="fixed top-0 left-0 w-full h-full -z-10"></canvas>
       <div className="top">
         <h1 className="title font-fredoka font-bold text-3xl">Thank you for ordering!</h1>

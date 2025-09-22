@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -256,6 +257,21 @@ const RaisingKaynesAdmin = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5">
+      <Helmet>
+        <title>Raising Kaynes Admin Panel</title>
+        <meta name="description" content="Staff panel for managing Raising Kaynes orders and generating customer receipts." />
+        
+        <meta property="og:title" content="Raising Kaynes Admin Panel" />
+        <meta property="og:description" content="Staff panel for managing Raising Kaynes orders and generating customer receipts." />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:url" content={window.location.href} />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Raising Kaynes Admin Panel" />
+        <meta name="twitter:description" content="Staff panel for managing Raising Kaynes orders and generating customer receipts." />
+        <meta name="twitter:image" content="/og-image.png" />
+      </Helmet>
       {/* Header */}
       <header 
         role="banner" 

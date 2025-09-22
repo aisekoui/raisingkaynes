@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -258,6 +259,21 @@ const StaffReceipt = () => {
 
   return (
     <div className="ticket-system min-h-screen flex flex-col">
+      <Helmet>
+        <title>{receipt ? `Staff Receipt: ${receipt.customer_name} - Raising Kaynes` : 'Staff Receipt - Raising Kaynes'}</title>
+        <meta name="description" content={receipt ? `Staff view of ${receipt.customer_name}'s order receipt. Total: ₱${receipt.total}` : 'Staff receipt view for Raising Kaynes orders.'} />
+        
+        <meta property="og:title" content={receipt ? `Staff Receipt: ${receipt.customer_name} - Raising Kaynes` : 'Staff Receipt - Raising Kaynes'} />
+        <meta property="og:description" content={receipt ? `Staff view of ${receipt.customer_name}'s order receipt. Total: ₱${receipt.total}` : 'Staff receipt view for Raising Kaynes orders.'} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:url" content={window.location.href} />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={receipt ? `Staff Receipt: ${receipt.customer_name} - Raising Kaynes` : 'Staff Receipt - Raising Kaynes'} />
+        <meta name="twitter:description" content={receipt ? `Staff view of ${receipt.customer_name}'s order receipt. Total: ₱${receipt.total}` : 'Staff receipt view for Raising Kaynes orders.'} />
+        <meta name="twitter:image" content="/og-image.png" />
+      </Helmet>
       <canvas id="chickenCanvas" className="fixed top-0 left-0 w-full h-full -z-10"></canvas>
       <div className="top">
         <h1 className="title font-fredoka font-bold text-3xl">Thank you for ordering!</h1>

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -9,6 +10,21 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 flex flex-col">
+      <Helmet>
+        <title>Raising Kaynes - Tender. Sarap. Repeat!</title>
+        <meta name="description" content="Experience the best chicken tenders, waffles, and lemonade. Order online and get your receipt instantly!" />
+        
+        <meta property="og:title" content="Raising Kaynes - Tender. Sarap. Repeat!" />
+        <meta property="og:description" content="Experience the best chicken tenders, waffles, and lemonade. Order online and get your receipt instantly!" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:url" content={window.location.href} />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Raising Kaynes - Tender. Sarap. Repeat!" />
+        <meta name="twitter:description" content="Experience the best chicken tenders, waffles, and lemonade. Order online and get your receipt instantly!" />
+        <meta name="twitter:image" content="/og-image.png" />
+      </Helmet>
       {/* Header */}
       <header 
         role="banner" 
