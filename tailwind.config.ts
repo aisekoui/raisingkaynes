@@ -15,6 +15,7 @@ export default {
     extend: {
       fontFamily: {
         ubuntu: ['Ubuntu', 'sans-serif'],
+        fredoka: ['Fredoka', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

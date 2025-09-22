@@ -260,7 +260,7 @@ const StaffReceipt = () => {
     <div className="ticket-system min-h-screen flex flex-col">
       <canvas id="chickenCanvas" className="fixed top-0 left-0 w-full h-full -z-10"></canvas>
       <div className="top">
-        <h1 className="title">Raising Kaynes</h1>
+        <h1 className="title font-fredoka font-bold text-3xl">Thank you for ordering!</h1>
         <div className="printer"></div>
       </div>
       
@@ -273,10 +273,10 @@ const StaffReceipt = () => {
                 alt="Raising Kaynes logo" 
                 className="w-8 h-8 object-contain"
               />
-              <span>Raising Kaynes</span>
+              <span className="font-fredoka font-bold">Raising Kaynes</span>
             </div>
             
-            <div className="order-header">
+            <div className="order-header font-fredoka font-medium">
               <h2>Order Receipt</h2>
               <p id="customer-name">Customer: {receipt.customer_name || 'Guest'}</p>
               <p id="order-date">Date: {new Date(receipt.created_at).toLocaleString()}</p>
@@ -287,7 +287,7 @@ const StaffReceipt = () => {
               )}
             </div>
 
-            <div className="details" id="order-details">
+            <div className="details font-fredoka font-medium" id="order-details">
               {receipt.items.map((item, index) => (
                 <div key={index} className="space-y-2 w-full mb-4">
                   <div className="item">
@@ -339,9 +339,9 @@ const StaffReceipt = () => {
                 className="w-full h-full object-contain"
               />
             </div>
-            <div className="description">
-              <h2>Thank you for ordering!</h2>
-              <p>You can order again from this QR</p>
+            <div className="description font-fredoka font-medium">
+              <h2>Craving more?</h2>
+              <p>Scan the QR to come back for seconds!</p>
             </div>
           </div>
         </div>
