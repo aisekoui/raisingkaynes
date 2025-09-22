@@ -118,66 +118,100 @@ const PublicReceipt = () => {
     fetchReceipt();
   }, [shortId]);
 
-  // Generate scattered chicken background with collision detection
-  const generateChickenBackground = () => {
-    const chickenBg = document.getElementById("chickenBg");
-    if (!chickenBg) return;
+  // Initialize falling chicken animation
+  const initFallingChickens = () => {
+    const canvas = document.getElementById("chickenCanvas") as HTMLCanvasElement;
+    if (!canvas) return;
 
-    // Clear existing chickens
-    chickenBg.innerHTML = '';
-    
-    const numChickens = 100; // MORE CHICKEN!
-    const chickenSrc = "/chicken-logo.png";
-    const chickenSize = 55; // Size in pixels
-    const minDistance = 65; // Slightly smaller min distance to fit more
-    const positions: { top: number; left: number }[] = [];
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-    // Helper function to check if position is valid (doesn't overlap)
-    const isValidPosition = (newTop: number, newLeft: number) => {
-      return positions.every(pos => {
-        const distance = Math.sqrt(
-          Math.pow(newTop - pos.top, 2) + Math.pow(newLeft - pos.left, 2)
-        );
-        return distance >= minDistance;
-      });
-    };
+    // Set canvas size
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    for (let i = 0; i < numChickens; i++) {
-      let attempts = 0;
-      let top, left;
-      
-      // Try to find a valid position (increased attempts for more chickens)
-      do {
-        top = Math.random() * 85 + 7.5; // 7.5% to 92.5% to avoid edges
-        left = Math.random() * 85 + 7.5;
-        attempts++;
-      } while (!isValidPosition(top, left) && attempts < 200);
+    const TOTAL_CHICKENS = 50;
+    const chickens: Chicken[] = [];
+    const chickenImg = new Image();
+    chickenImg.src = "/chicken-logo.png";
 
-      // Only add chicken if we found a valid position
-      if (attempts < 200) {
-        positions.push({ top, left });
-        
-        const chicken = document.createElement("img");
-        chicken.src = chickenSrc;
-        chicken.style.top = top + "%";
-        chicken.style.left = left + "%";
+    class Chicken {
+      x: number;
+      y: number;
+      size: number;
+      speed: number;
+      rotation: number;
 
-        // Random rotation
-        const rotation = Math.floor(Math.random() * 360);
-        chicken.style.transform = `rotate(${rotation}deg)`;
+      constructor() {
+        this.reset();
+      }
 
-        chickenBg.appendChild(chicken);
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * -canvas.height; // start above screen
+        this.size = 40 + Math.random() * 20; // random size variation
+        this.speed = 1 + Math.random() * 2; // fall speed variation
+        this.rotation = Math.random() * 360; // random rotation
+      }
+
+      draw() {
+        if (!ctx) return;
+        ctx.save();
+        ctx.globalAlpha = 0.3; // 30% transparency
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation * Math.PI / 180);
+        ctx.drawImage(chickenImg, -this.size/2, -this.size/2, this.size, this.size);
+        ctx.restore();
+      }
+
+      update() {
+        this.y += this.speed;
+        if (this.y > canvas.height + this.size) {
+          this.reset();
+        }
+        this.draw();
       }
     }
+
+    const render = () => {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      chickens.forEach(chicken => chicken.update());
+      requestAnimationFrame(render);
+    };
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      // Reset chickens positions for new canvas size
+      chickens.forEach(chicken => chicken.reset());
+    };
+
+    chickenImg.onload = () => {
+      for (let i = 0; i < TOTAL_CHICKENS; i++) {
+        chickens.push(new Chicken());
+      }
+      render();
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   };
 
-  // Trigger print animation and background generation after receipt data is loaded
+  // Trigger print animation and falling chickens after receipt data is loaded
   useEffect(() => {
     if (receipt && !loading && !error) {
       // Small delay to ensure DOM is updated
       setTimeout(() => {
-        generateChickenBackground();
+        const cleanup = initFallingChickens();
         playPrintAnimation();
+        
+        // Return cleanup function
+        return cleanup;
       }, 100);
     }
   }, [receipt, loading, error]);
@@ -211,7 +245,7 @@ const PublicReceipt = () => {
 
   return (
     <div className="ticket-system min-h-screen flex flex-col">
-      <div className="chicken-bg" id="chickenBg"></div>
+      <canvas id="chickenCanvas" className="fixed top-0 left-0 w-full h-full -z-10"></canvas>
       <div className="top">
         <h1 className="title">Raising Kaynes</h1>
         <div className="printer"></div>
