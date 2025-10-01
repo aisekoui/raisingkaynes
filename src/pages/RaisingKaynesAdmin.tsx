@@ -239,12 +239,26 @@ const RaisingKaynesAdmin = () => {
           created_by: null, // We'll implement auth later
           expires_at: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30).toISOString()
         })
-        .select('short_id')
+        .select('short_id, created_at')
         .single();
 
       if (error) {
         throw error;
       }
+
+      // Sync to Sheet Best in background (don't block navigation)
+      supabase.functions.invoke('sync-to-sheetbest', {
+        body: {
+          customer_name: customerName.trim(),
+          items: orderItems,
+          total: total,
+          short_id: data.short_id,
+          created_at: data.created_at,
+        }
+      }).catch(err => {
+        console.error('Failed to sync to Sheet Best:', err);
+        // Don't show error to user - receipt was still created
+      });
 
       toast.success("Receipt generated successfully!");
       navigate(`/receipt?sid=${data.short_id}`);

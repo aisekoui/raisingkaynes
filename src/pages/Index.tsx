@@ -57,26 +57,50 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Main Content - Centered Button */}
+      {/* Main Content - Centered Buttons */}
       <main className="flex-1 flex items-center justify-center">
-        <button
-          onClick={handleAccessStaffPanel}
-          aria-label="Access Staff Panel"
-          className="font-ubuntu text-xl font-bold px-9 py-4 rounded-xl transition-all duration-200 hover:shadow-lg"
-          style={{
-            backgroundColor: '#FFC107',
-            color: '#D32F2F',
-            boxShadow: '0 6px 18px rgba(0,0,0,0.12)'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#e6a900';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = '#FFC107';
-          }}
-        >
-          Access Staff Panel
-        </button>
+        <div className="space-y-4 flex flex-col items-center">
+          <button
+            onClick={handleAccessStaffPanel}
+            aria-label="Access Staff Panel"
+            className="font-ubuntu text-xl font-bold px-9 py-4 rounded-xl transition-all duration-200 hover:shadow-lg"
+            style={{
+              backgroundColor: '#FFC107',
+              color: '#D32F2F',
+              boxShadow: '0 6px 18px rgba(0,0,0,0.12)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#e6a900';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#FFC107';
+            }}
+          >
+            Access Staff Panel
+          </button>
+          
+          <button
+            onClick={() => window.open('YOUR_GOOGLE_SHEET_URL_HERE', '_blank')}
+            aria-label="View Receipts Log"
+            className="font-ubuntu text-lg font-semibold px-8 py-3 rounded-xl transition-all duration-200 hover:shadow-lg border-2"
+            style={{
+              backgroundColor: 'transparent',
+              color: '#D32F2F',
+              borderColor: '#D32F2F',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.08)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#D32F2F';
+              e.currentTarget.style.color = 'white';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#D32F2F';
+            }}
+          >
+            View Receipts Log
+          </button>
+        </div>
       </main>
 
       {/* Optional Footer */}

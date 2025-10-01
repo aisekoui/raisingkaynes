@@ -2,3 +2,6 @@ project_id = "eudcijcaihzctrfborim"
 
 [functions.receipts]
 verify_jwt = false
+
+[functions.sync-to-sheetbest]
+verify_jwt = false
