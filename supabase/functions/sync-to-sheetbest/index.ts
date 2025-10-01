@@ -36,7 +36,7 @@ serve(async (req) => {
     const receiptData: ReceiptData = await req.json();
     console.log('Syncing receipt to Sheet Best:', receiptData.short_id);
 
-    // Format items as a readable string
+    // Format items as a readable string with flavors and quantities
     const itemsText = receiptData.items.map(item => {
       if (item.flavors && item.flavors.length > 0) {
         const flavorsText = item.flavors
@@ -47,19 +47,34 @@ serve(async (req) => {
       return `${item.name}${item.quantity ? ` x${item.quantity}` : ''}`;
     }).join(' | ');
 
-    // Format data for Sheet Best (each key becomes a column)
+    // Calculate total quantity
+    const totalQuantity = receiptData.items.reduce((sum, item) => {
+      if (item.flavors && item.flavors.length > 0) {
+        return sum + item.flavors.reduce((flavorSum, f) => flavorSum + f.quantity, 0);
+      }
+      return sum + (item.quantity || 1);
+    }, 0);
+
+    // Format date
+    const formattedDate = new Date(receiptData.created_at).toLocaleString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    // Construct receipt link
+    const receiptLink = `https://raisingkaynes.lovable.app/receipt/${receiptData.short_id}`;
+
+    // Format data for Sheet Best (columns: A=Name, B=Order, C=Quantity, D=Date, F=Link)
     const sheetData = {
-      'Receipt ID': receiptData.short_id,
-      'Customer Name': receiptData.customer_name,
-      'Date': new Date(receiptData.created_at).toLocaleString('en-US', {
-        month: '2-digit',
-        day: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-      'Items': itemsText,
-      'Total': `$${receiptData.total.toFixed(2)}`,
+      'Name': receiptData.customer_name,
+      'Order': itemsText,
+      'Quantity': totalQuantity,
+      'Date': formattedDate,
+      '': '', // Column E (empty)
+      'Link': receiptLink,
     };
 
     console.log('Sending to Sheet Best:', sheetData);
