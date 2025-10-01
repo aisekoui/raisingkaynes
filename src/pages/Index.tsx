@@ -80,7 +80,7 @@ const Index = () => {
           </button>
           
           <button
-            onClick={() => window.open('YOUR_GOOGLE_SHEET_URL_HERE', '_blank')}
+            onClick={() => window.open('https://docs.google.com/spreadsheets/d/1CWOhl93SSWMatccajCoG67q4PCDxtKC2fy-mQFYtNAk/edit?usp=sharing', '_blank')}
             aria-label="View Receipts Log"
             className="font-ubuntu text-lg font-semibold px-8 py-3 rounded-xl transition-all duration-200 hover:shadow-lg border-2"
             style={{
