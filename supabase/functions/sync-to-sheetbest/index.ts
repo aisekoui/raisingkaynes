@@ -36,24 +36,15 @@ serve(async (req) => {
     const receiptData: ReceiptData = await req.json();
     console.log('Syncing receipt to Sheet Best:', receiptData.short_id);
 
-    // Format items as a readable string with flavors and quantities
+    // Format items with item name repeated for each flavor as requested
     const itemsText = receiptData.items.map(item => {
       if (item.flavors && item.flavors.length > 0) {
-        const flavorsText = item.flavors
-          .map(f => `${f.flavor} (${f.quantity})`)
+        return item.flavors
+          .map(f => `${item.name} ${f.flavor} (${f.quantity})`)
           .join(', ');
-        return `${item.name}: ${flavorsText}`;
       }
-      return `${item.name}${item.quantity ? ` x${item.quantity}` : ''}`;
-    }).join(' | ');
-
-    // Calculate total quantity
-    const totalQuantity = receiptData.items.reduce((sum, item) => {
-      if (item.flavors && item.flavors.length > 0) {
-        return sum + item.flavors.reduce((flavorSum, f) => flavorSum + f.quantity, 0);
-      }
-      return sum + (item.quantity || 1);
-    }, 0);
+      return `${item.name}${item.quantity ? ` (${item.quantity})` : ''}`;
+    }).join(', ');
 
     // Format date
     const formattedDate = new Date(receiptData.created_at).toLocaleString('en-US', {
@@ -67,14 +58,13 @@ serve(async (req) => {
     // Construct receipt link
     const receiptLink = `https://raisingkaynes.lovable.app/receipt/${receiptData.short_id}`;
 
-    // Format data for Sheet Best (columns: A=Name, B=Order, C=Quantity, D=Date, F=Link)
+    // Format data for Sheet Best (columns: A=Customer Name, B=Order, C=Total Price, D=Date, E=Receipt Link)
     const sheetData = {
-      'Name': receiptData.customer_name,
+      'Customer Name': receiptData.customer_name,
       'Order': itemsText,
-      'Quantity': totalQuantity,
+      'Total Price': `$${receiptData.total.toFixed(2)}`,
       'Date': formattedDate,
-      '': '', // Column E (empty)
-      'Link': receiptLink,
+      'Receipt Link': receiptLink,
     };
 
     console.log('Sending to Sheet Best:', sheetData);
