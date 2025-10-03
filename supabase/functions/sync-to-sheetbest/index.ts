@@ -8,8 +8,12 @@ const corsHeaders = {
 interface ReceiptData {
   customer_name: string;
   items: Array<{
-    name: string;
-    flavors?: Array<{ flavor: string; quantity: number }>;
+    category: string;
+    flavors?: Array<{ name: string; quantity: number }>;
+    mix_details?: {
+      tender_flavors: Array<{ name: string; quantity: number }>;
+      waffle_flavors: Array<{ name: string; quantity: number }>;
+    };
     quantity?: number;
   }>;
   total: number;
@@ -36,33 +40,47 @@ serve(async (req) => {
     const receiptData: ReceiptData = await req.json();
     console.log('Syncing receipt to Sheet Best:', receiptData.short_id);
 
-    // Format items with item name repeated for each flavor as requested
+    // Format items with category and flavor details
     const itemsText = receiptData.items.map(item => {
-      if (item.flavors && item.flavors.length > 0) {
-        return item.flavors
-          .map(f => `${item.name} ${f.flavor} (${f.quantity})`)
+      // Handle Mix & Match with tender and waffle flavors
+      if (item.mix_details) {
+        const tenderText = item.mix_details.tender_flavors
+          .map(f => `${f.name} Tender (${f.quantity})`)
           .join(', ');
+        const waffleText = item.mix_details.waffle_flavors
+          .map(f => `${f.name} Waffle (${f.quantity})`)
+          .join(', ');
+        return `${item.category}: ${tenderText}, ${waffleText}`;
       }
-      return `${item.name}${item.quantity ? ` (${item.quantity})` : ''}`;
-    }).join(', ');
+      // Handle items with flavors (Tenders, Waffles)
+      if (item.flavors && item.flavors.length > 0) {
+        const flavorsText = item.flavors
+          .map(f => `${f.name} (${f.quantity})`)
+          .join(', ');
+        return `${item.category}: ${flavorsText}`;
+      }
+      // Handle simple items (Lemonade, Add-ons)
+      return `${item.category}${item.quantity ? ` (${item.quantity})` : ''}`;
+    }).join(' | ');
 
-    // Format date
+    // Format date to Philippine Time (UTC+8)
     const formattedDate = new Date(receiptData.created_at).toLocaleString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
+      timeZone: 'Asia/Manila',
     });
 
-    // Construct receipt link
-    const receiptLink = `https://raisingkaynes.lovable.app/receipt/${receiptData.short_id}`;
+    // Construct receipt link (use vercel domain)
+    const receiptLink = `https://raisingkaynes.vercel.app/receipt?sid=${receiptData.short_id}`;
 
-    // Format data for Sheet Best (columns: A=Customer Name, B=Order, C=Total Price, D=Date, E=Receipt Link)
+    // Format data for Sheet Best (columns match user's sheet: Name, Order(s), Price, Date, Receipt Link)
     const sheetData = {
-      'Customer Name': receiptData.customer_name,
-      'Order': itemsText,
-      'Total Price': `$${receiptData.total.toFixed(2)}`,
+      'Name': receiptData.customer_name,
+      'Order(s)': itemsText,
+      'Price': `₱${receiptData.total.toFixed(2)}`,
       'Date': formattedDate,
       'Receipt Link': receiptLink,
     };
