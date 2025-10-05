@@ -31,6 +31,8 @@ const prices = {
   waffles: 49,
   lemonade: 29,
   addons: { sauce: 59, syrup: 29, rice: 20 },
+  duo_tenders: 109,
+  triple_tenders: 154,
   mix: 139
 };
 
@@ -61,6 +63,18 @@ const RaisingKaynesAdmin = () => {
     "large extra sauce": 0,
     "extra syrup": 0,
     "extra rice": 0
+  });
+
+  const [duoTendersFlavors, setDuoTendersFlavors] = useState<{[key: string]: number}>({
+    "Buffalo": 0,
+    "Soy Garlic": 0,
+    "Salted Egg": 0
+  });
+
+  const [tripleTendersFlavors, setTripleTendersFlavors] = useState<{[key: string]: number}>({
+    "Buffalo": 0,
+    "Soy Garlic": 0,
+    "Salted Egg": 0
   });
 
   const [mixQty, setMixQty] = useState(1);
@@ -143,6 +157,42 @@ const RaisingKaynesAdmin = () => {
       }
     });
 
+    // Duo Tenders
+    if (selectedCategories.has("duo-tenders")) {
+      const duoTotal = Object.values(duoTendersFlavors).reduce((sum, qty) => sum + qty, 0);
+      if (duoTotal > 0) {
+        const subtotal = duoTotal * prices.duo_tenders;
+        items.push({
+          category: "Duo Tenders",
+          unit_price: prices.duo_tenders,
+          quantity: duoTotal,
+          flavors: Object.entries(duoTendersFlavors)
+            .filter(([_, qty]) => qty > 0)
+            .map(([name, quantity]) => ({ name, quantity })),
+          subtotal
+        });
+        newTotal += subtotal;
+      }
+    }
+
+    // Triple Tenders
+    if (selectedCategories.has("triple-tenders")) {
+      const tripleTotal = Object.values(tripleTendersFlavors).reduce((sum, qty) => sum + qty, 0);
+      if (tripleTotal > 0) {
+        const subtotal = tripleTotal * prices.triple_tenders;
+        items.push({
+          category: "Triple Tenders",
+          unit_price: prices.triple_tenders,
+          quantity: tripleTotal,
+          flavors: Object.entries(tripleTendersFlavors)
+            .filter(([_, qty]) => qty > 0)
+            .map(([name, quantity]) => ({ name, quantity })),
+          subtotal
+        });
+        newTotal += subtotal;
+      }
+    }
+
     // Mix & Match
     if (selectedCategories.has("mix")) {
       const tenderMixTotal = Object.values(mixTenderFlavors).reduce((sum, qty) => sum + qty, 0);
@@ -198,7 +248,7 @@ const RaisingKaynesAdmin = () => {
 
   useEffect(() => {
     updateOrderPreview();
-  }, [selectedCategories, chickenTendersFlavors, waffleFlavors, lemonadeQty, addons, mixQty, mixTenderFlavors, mixWaffleFlavors]);
+  }, [selectedCategories, chickenTendersFlavors, waffleFlavors, lemonadeQty, addons, duoTendersFlavors, tripleTendersFlavors, mixQty, mixTenderFlavors, mixWaffleFlavors]);
 
   useEffect(() => {
     setIsFormValid(validateForm());
@@ -213,6 +263,10 @@ const RaisingKaynesAdmin = () => {
         setChickenTendersFlavors({ "Buffalo": 0, "Soy Garlic": 0, "Salted Egg": 0 });
       } else if (category === "waffles") {
         setWaffleFlavors({ "Chocolate Chip w/ syrup": 0, "Cookies n Cream w/ syrup": 0, "Plain w/ syrup": 0 });
+      } else if (category === "duo-tenders") {
+        setDuoTendersFlavors({ "Buffalo": 0, "Soy Garlic": 0, "Salted Egg": 0 });
+      } else if (category === "triple-tenders") {
+        setTripleTendersFlavors({ "Buffalo": 0, "Soy Garlic": 0, "Salted Egg": 0 });
       } else if (category === "mix") {
         setMixTenderFlavors({ "Buffalo": 0, "Soy Garlic": 0, "Salted Egg": 0 });
         setMixWaffleFlavors({ "Chocolate Chip w/ syrup": 0, "Cookies n Cream w/ syrup": 0, "Plain w/ syrup": 0 });
@@ -535,6 +589,109 @@ const RaisingKaynesAdmin = () => {
                       </div>
                     );
                   })}
+                </div>
+
+                {/* Tenders Section */}
+                <div className="space-y-3">
+                  <h3 className="text-lg font-medium">Tenders</h3>
+                  
+                  {/* Duo Tenders */}
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-3">
+                      <Checkbox
+                        id="duo-tenders"
+                        checked={selectedCategories.has("duo-tenders")}
+                        onCheckedChange={() => handleCategoryToggle("duo-tenders")}
+                      />
+                      <Label htmlFor="duo-tenders" className="text-lg font-medium">
+                        Duo Tenders — ₱109
+                      </Label>
+                    </div>
+                    
+                    {selectedCategories.has("duo-tenders") && (
+                      <div className="ml-6 space-y-2 p-4 bg-muted/50 rounded-lg">
+                        {Object.entries(duoTendersFlavors).map(([flavor, qty]) => (
+                          <div key={flavor} className="flex items-center justify-between">
+                            <span>{flavor}</span>
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setDuoTendersFlavors(prev => ({ 
+                                  ...prev, 
+                                  [flavor]: Math.max(0, prev[flavor] - 1) 
+                                }))}
+                              >
+                                -
+                              </Button>
+                              <span className="w-8 text-center">{qty}</span>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setDuoTendersFlavors(prev => ({ 
+                                  ...prev, 
+                                  [flavor]: prev[flavor] + 1 
+                                }))}
+                              >
+                                +
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Triple Tenders */}
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-3">
+                      <Checkbox
+                        id="triple-tenders"
+                        checked={selectedCategories.has("triple-tenders")}
+                        onCheckedChange={() => handleCategoryToggle("triple-tenders")}
+                      />
+                      <Label htmlFor="triple-tenders" className="text-lg font-medium">
+                        Triple Tenders — ₱154
+                      </Label>
+                    </div>
+                    
+                    {selectedCategories.has("triple-tenders") && (
+                      <div className="ml-6 space-y-2 p-4 bg-muted/50 rounded-lg">
+                        {Object.entries(tripleTendersFlavors).map(([flavor, qty]) => (
+                          <div key={flavor} className="flex items-center justify-between">
+                            <span>{flavor}</span>
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setTripleTendersFlavors(prev => ({ 
+                                  ...prev, 
+                                  [flavor]: Math.max(0, prev[flavor] - 1) 
+                                }))}
+                              >
+                                -
+                              </Button>
+                              <span className="w-8 text-center">{qty}</span>
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setTripleTendersFlavors(prev => ({ 
+                                  ...prev, 
+                                  [flavor]: prev[flavor] + 1 
+                                }))}
+                              >
+                                +
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Mix & Match */}
